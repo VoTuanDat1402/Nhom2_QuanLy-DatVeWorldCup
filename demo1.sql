@@ -202,9 +202,9 @@ CREATE TABLE tickets (
     INDEX idx_ticket_check_in (ticket_code, status, check_in_at)
 ) ENGINE=InnoDB;
 
--- ============================================
+-- ==========================================
 -- 13. BẢNG THANH TOÁN (Tương thích Payment.php & PaymentService)
--- ============================================
+-- ==========================================
 CREATE TABLE payments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
@@ -269,10 +269,8 @@ INSERT INTO stadiums (id, city_id, name, stadium_name, location, capacity) VALUE
 -- 6. KHU VỰC GHẾ (LIÊN KẾT TRỰC TIẾP TICKET_TYPE_ID)
 INSERT INTO seat_zones (stadium_id, ticket_type_id, zone_name, name, type, total_seats, base_price)
 SELECT id, 1, 'Khán đài VIP', 'Khán đài VIP', 'VIP', 10000, 8500000.00 FROM stadiums;
-SELECT id, 1, 'Khán đài VIP', 'Khán đài VIP', 'VIP', 10000, 8500000.00 FROM stadiums;
 
 INSERT INTO seat_zones (stadium_id, ticket_type_id, zone_name, name, type, total_seats, base_price)
-SELECT id, 2, 'Khán đài Phổ Thông', 'Khán đài Phổ Thông', 'STANDARD', 90000, 2500000.00 FROM stadiums;
 SELECT id, 2, 'Khán đài Phổ Thông', 'Khán đài Phổ Thông', 'STANDARD', 90000, 2500000.00 FROM stadiums;
 
 -- 7. 48 ĐỘI TUYỂN 12 BẢNG (A - L)
@@ -473,7 +471,6 @@ INSERT INTO seq_100 (n) VALUES
 
 INSERT IGNORE INTO match_seats (match_id, seat_zone_id, seat_code, price, status)
 SELECT 1, 1, CONCAT('VIP-BLK', b.n, '-R', r.n, '-', LPAD(s.seat_num, 2, '0')), 8500000.00, 'AVAILABLE'
-SELECT 1, 1, CONCAT('VIP-BLK', b.n, '-R', r.n, '-', LPAD(s.seat_num, 2, '0')), 8500000.00, 'AVAILABLE'
 FROM seq_100 b
 JOIN seq_100 r ON r.n <= 5
 JOIN (
@@ -486,7 +483,6 @@ JOIN (
 WHERE b.n <= 2;
 
 INSERT IGNORE INTO match_seats (match_id, seat_zone_id, seat_code, price, status)
-SELECT 1, 32, CONCAT('STD-', sec.sec_code, '-BLK', (100 + b.n), '-R', r.n, '-', LPAD(s.seat_num, 2, '0')), 2500000.00, 'AVAILABLE'
 SELECT 1, 32, CONCAT('STD-', sec.sec_code, '-BLK', (100 + b.n), '-R', r.n, '-', LPAD(s.seat_num, 2, '0')), 2500000.00, 'AVAILABLE'
 FROM (SELECT 'A' AS sec_code UNION ALL SELECT 'B' AS sec_code) sec
 JOIN seq_100 b ON b.n <= 2
